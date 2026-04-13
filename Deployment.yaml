@@ -136,21 +136,13 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: adk-agent-gateway
-  annotations:
-    networking.gke.io/certmap: ${CERT_MAP_NAME}
 spec:
   # Create an external Application Load Balancer
   gatewayClassName: gke-l7-global-external-managed
-  addresses:
-  - type: NamedAddress
-    value: ${STATIC_IP_NAME}
   listeners:
   - name: http
     protocol: HTTP
     port: 80
-  - name: https
-    protocol: HTTPS
-    port: 443
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute

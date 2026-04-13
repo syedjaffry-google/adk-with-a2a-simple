@@ -21,9 +21,10 @@ adk deploy agent_engine --project [YOUR PROJECT NAME] --region [REGION] wiki_res
 ```
 
 ## GKE
+The Deployment.yaml creates a Gateway API that serves traffic on port 80.
 
 ### Pre-requisits
-The Deployment.yaml creates a Gateway API that serves traffic on ports 80 and 443. As such, it expects a certificate to be pre-existing along with a registered domain in cloud DNS that is linked to the certificate and an external static IP. For this demo to work in your environment, create/register your own domain and certificate and update Deployment.yaml 
+Ensure you have setup an Artifact Registry and created a repository to store the container images.
 
 ### Build & push container images
 ```bash
@@ -42,6 +43,8 @@ docker push [REGION]-docker.pkg.dev/[GCP-PROJECT-ID]/[REPO-NAME]/plotwriter-agen
 ```
 
 ### Create Kubernetes service accounts
+These script create a service account for each agent and bind it to the AI Platform user role via Google workload identity mechanism.
+
 ```bash
 ./plotwriter/K8s/create-service-account.sh
 ./researcher/K8s/create-service-account.sh
@@ -65,8 +68,6 @@ kubectl create configmap agent-config \
 # 1. Export the environment variables
 export PLOTWRITER_IMAGE="[YOUR-REGION]-docker.pkg.dev/[YOUR PROJECT ID]/[YOUR REPO]/plotwriter-agent:latest"
 export RESEARCHER_IMAGE="[YOUR-REGION]-docker.pkg.dev/[YOUR PROJECT ID]/[YOUR REPO]/researcher-agent:latest"
-export STATIC_IP_NAME="[YOUR STATIC IP NAME]"
-export CERT_MAP_NAME="[YOUR CERT MAP NAME]"
 
 envsubst < Deployment.yaml | kubectl apply -f -
 
