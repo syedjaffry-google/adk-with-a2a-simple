@@ -55,8 +55,8 @@ These script create a service account for each agent and bind it to the AI Platf
 kubectl create configmap agent-config \
   --from-literal=PORT=8080 \
   --from-literal=GOOGLE_CLOUD_PROJECT="YOUR PROJECT ID" \
-  --from-literal=PLOTWRITER_API_URL="https://[YOUR DOMAIN]/plotwriter" \
-  --from-literal=RESEARCHER_API_URL="https://[YOUR DOMAIN]/researcher" \
+  --from-literal=PLOTWRITER_URL="https://[YOUR DOMAIN]/plotwriter" \
+  --from-literal=RESEARCHER_URL="https://[YOUR DOMAIN]/researcher" \
   --from-literal=GOOGLE_CLOUD_LOCATION="YOUR REGION" \
   --from-literal=GOOGLE_GENAI_USE_VERTEXAI="true" \
   --from-literal=MODEL="gemini-2.5-flash"

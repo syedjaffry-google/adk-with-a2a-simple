@@ -24,6 +24,7 @@ from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
+from google.adk.tools.mcp_tool import MCPToolset, StreamableHTTPConnectionParams
 
 
 cloud_logging_client = google.cloud.logging.Client()
@@ -31,7 +32,10 @@ cloud_logging_client.setup_logging()
 
 
 model_name = os.environ.get('MODEL', 'gemini-2.5-flash')
-public_url = os.environ.get('PLOTWRITER_API_URL', 'http://localhost:8000')
+public_url = os.environ.get('PLOTWRITER_URL', 'http://localhost:8000')
+researcher_url = os.environ.get('RESEARCHER_URL', 'http://localhost:8001')
+movie_db_mcp_url = os.environ.get('MOVIE_DB_MCP_URL', 'http://localhost:8002')
+
 print(model_name)
 
 # Tools
@@ -84,11 +88,16 @@ file_writer = Agent(
         - For the 'content' to write, extract the following from the PLOT_OUTLINE:
             - A logline
             - Synopsis or plot outline
+    - Use your 'store_movie_in_vector_db' mcp tool to store the movie title and logline in the movie database.
     """,
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
     ),
-    tools=[write_file],
+    tools=[write_file, MCPToolset(
+        connection_params=StreamableHTTPConnectionParams(
+            url=f"{movie_db_mcp_url}/mcp",
+        ),
+    )],
 )
 
 screenwriter = Agent(
@@ -125,7 +134,7 @@ wiki_researcher = RemoteA2aAgent(
     description="Agent that uses wikipedia to research answers to questions",
     agent_card=
     (
-        f"https://demo-33.com/researcher/{AGENT_CARD_WELL_KNOWN_PATH}"        
+        f"{researcher_url}/{AGENT_CARD_WELL_KNOWN_PATH}"        
     ),
 )
 
