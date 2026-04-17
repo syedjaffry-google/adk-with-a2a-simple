@@ -50,13 +50,21 @@ These script create a service account for each agent and bind it to the AI Platf
 ./researcher/K8s/create-service-account.sh
 ```
 
+### Create static IP address
+You'll need a static IP address for the load balancer so that it can be referenced in the ADK agent cards. You can create one using the following command:
+
+```bash
+gcloud compute addresses create [IP_ADDRESS_NAME] --global
+```
+
+
 ### Create Kubernetes config map for env variables for agents
 ```bash
 kubectl create configmap agent-config \
   --from-literal=PORT=8080 \
   --from-literal=GOOGLE_CLOUD_PROJECT="YOUR PROJECT ID" \
-  --from-literal=PLOTWRITER_URL="https://[YOUR DOMAIN]/plotwriter" \
-  --from-literal=RESEARCHER_URL="https://[YOUR DOMAIN]/researcher" \
+  --from-literal=PLOTWRITER_URL="https://[STATIC_IP_ADDRESS]/plotwriter" \
+  --from-literal=RESEARCHER_URL="https://[STATIC_IP_ADDRESS]/researcher" \
   --from-literal=GOOGLE_CLOUD_LOCATION="YOUR REGION" \
   --from-literal=GOOGLE_GENAI_USE_VERTEXAI="true" \
   --from-literal=MODEL="gemini-2.5-flash"
@@ -68,6 +76,7 @@ kubectl create configmap agent-config \
 # 1. Export the environment variables
 export PLOTWRITER_IMAGE="[YOUR-REGION]-docker.pkg.dev/[YOUR PROJECT ID]/[YOUR REPO]/plotwriter-agent:latest"
 export RESEARCHER_IMAGE="[YOUR-REGION]-docker.pkg.dev/[YOUR PROJECT ID]/[YOUR REPO]/researcher-agent:latest"
+export STATIC_IP_NAME="[YOUR STATIC IP NAME]"
 
 envsubst < Deployment.yaml | kubectl apply -f -
 

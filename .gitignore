@@ -3,7 +3,10 @@ plotwriter/movie_plotwriter/__pycache__
 plotwriter/movie_pitches
 plotwriter/movie_plotwriter/build.sh
 researcher/wiki_researcher/build.sh
+mcp-server/build.sh
 researcher/wiki_researcher/__pycache__
 researcher/wiki_researcher/.adk
+mcp-server/__pycache__
+mcp-server/.adk
 certificate-map.sh
 

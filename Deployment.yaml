@@ -139,6 +139,9 @@ metadata:
 spec:
   # Create an external Application Load Balancer
   gatewayClassName: gke-l7-global-external-managed
+  addresses:
+  - type: NamedAddress
+    value: ${STATIC_IP_NAME}
   listeners:
   - name: http
     protocol: HTTP
