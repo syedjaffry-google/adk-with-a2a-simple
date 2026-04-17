@@ -42,9 +42,9 @@ docker push [REGION]-docker.pkg.dev/[GCP-PROJECT-ID]/[REPO-NAME]/plotwriter-agen
 
 cd mcp-server
 
-docker build --platform linux/amd64 -t [REGION]-docker.pkg.dev/[GCP-PROJECT-ID]/[REPO-NAME]/movie-db-mcp-server:latest .
+docker build --platform linux/amd64 -t [REGION]-docker.pkg.dev/[GCP-PROJECT-ID]/[REPO-NAME]/mcp-server-movie-db:latest .
 
-docker push [REGION]-docker.pkg.dev/[GCP-PROJECT-ID]/[REPO-NAME]/movie-db-mcp-server:latest
+docker push [REGION]-docker.pkg.dev/[GCP-PROJECT-ID]/[REPO-NAME]/mcp-server-movie-db:latest
 
 ```
 

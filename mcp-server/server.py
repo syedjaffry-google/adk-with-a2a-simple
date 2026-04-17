@@ -3,6 +3,8 @@ import logging
 import os
 
 import httpx
+from fastapi import Request
+from fastapi.responses import PlainTextResponse
 from fastmcp import FastMCP
 
 logger = logging.getLogger(__name__)
@@ -59,6 +61,11 @@ def store_movie_in_vector_db(movie: dict):
     except Exception as e:
         logger.error(f"❌ Error storing movie in vector database: {e}")
         return {"error": f"Error storing movie in vector database: {e}"}
+
+async def health_check(request: Request) -> PlainTextResponse:
+    return PlainTextResponse("Agent is healthy and running!")
+
+mcp.app.add_route("/", health_check, methods=["GET"])
 
 if __name__ == "__main__":
     logger.info(f"🚀 MCP server started on port {os.getenv('PORT', '8080')}")
