@@ -63,8 +63,8 @@ gcloud compute addresses create [IP_ADDRESS_NAME] --global
 kubectl create configmap agent-config \
   --from-literal=PORT=8080 \
   --from-literal=GOOGLE_CLOUD_PROJECT="YOUR PROJECT ID" \
-  --from-literal=PLOTWRITER_URL="https://[STATIC_IP_ADDRESS]/plotwriter" \
-  --from-literal=RESEARCHER_URL="https://[STATIC_IP_ADDRESS]/researcher" \
+  --from-literal=PLOTWRITER_URL="http://[STATIC_IP_ADDRESS]/plotwriter" \
+  --from-literal=RESEARCHER_URL="http://[STATIC_IP_ADDRESS]/researcher" \
   --from-literal=GOOGLE_CLOUD_LOCATION="YOUR REGION" \
   --from-literal=GOOGLE_GENAI_USE_VERTEXAI="true" \
   --from-literal=MODEL="gemini-2.5-flash"
