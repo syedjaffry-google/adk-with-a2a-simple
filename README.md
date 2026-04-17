@@ -40,6 +40,12 @@ docker build --platform linux/amd64 -t [REGION]-docker.pkg.dev/[GCP-PROJECT-ID]/
 
 docker push [REGION]-docker.pkg.dev/[GCP-PROJECT-ID]/[REPO-NAME]/plotwriter-agent:latest
 
+cd mcp-server
+
+docker build --platform linux/amd64 -t [REGION]-docker.pkg.dev/[GCP-PROJECT-ID]/[REPO-NAME]/movie-db-mcp-server:latest .
+
+docker push [REGION]-docker.pkg.dev/[GCP-PROJECT-ID]/[REPO-NAME]/movie-db-mcp-server:latest
+
 ```
 
 ### Create Kubernetes service accounts
@@ -48,6 +54,7 @@ These script create a service account for each agent and bind it to the AI Platf
 ```bash
 ./plotwriter/K8s/create-service-account.sh
 ./researcher/K8s/create-service-account.sh
+./mcp-server/K8s/create-service-account.sh
 ```
 
 ### Create static IP address
@@ -65,6 +72,7 @@ kubectl create configmap agent-config \
   --from-literal=GOOGLE_CLOUD_PROJECT="YOUR PROJECT ID" \
   --from-literal=PLOTWRITER_URL="http://[STATIC_IP_ADDRESS]/plotwriter" \
   --from-literal=RESEARCHER_URL="http://[STATIC_IP_ADDRESS]/researcher" \
+  --from-literal=MOVIE_DB_MCP_URL="http://[STATIC_IP_ADDRESS]/movie-db-mcp" \
   --from-literal=GOOGLE_CLOUD_LOCATION="YOUR REGION" \
   --from-literal=GOOGLE_GENAI_USE_VERTEXAI="true" \
   --from-literal=MODEL="gemini-2.5-flash"
@@ -76,6 +84,7 @@ kubectl create configmap agent-config \
 # 1. Export the environment variables
 export PLOTWRITER_IMAGE="[YOUR-REGION]-docker.pkg.dev/[YOUR PROJECT ID]/[YOUR REPO]/plotwriter-agent:latest"
 export RESEARCHER_IMAGE="[YOUR-REGION]-docker.pkg.dev/[YOUR PROJECT ID]/[YOUR REPO]/researcher-agent:latest"
+export MCP_SERVER_IMAGE="[YOUR-REGION]-docker.pkg.dev/[YOUR PROJECT ID]/[YOUR REPO]/mcp-server-movie-db:latest"
 export STATIC_IP_NAME="[YOUR STATIC IP NAME]"
 
 envsubst < Deployment.yaml | kubectl apply -f -
