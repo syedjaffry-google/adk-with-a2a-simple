@@ -99,7 +99,7 @@ file_writer = Agent(
         - For the 'content' to write, extract the following from the PLOT_OUTLINE:
             - A logline
             - Synopsis or plot outline
-    - Use your 'store_movie_in_vector_db' mcp tool to store the movie title and logline in the movie database.
+    - Use your mcp tool to store the movie title and logline in the movie database.
     """,
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
