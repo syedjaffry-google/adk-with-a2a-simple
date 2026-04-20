@@ -6,12 +6,16 @@ import httpx
 from fastmcp import FastMCP
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
+from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(format="[%(levelname)s]: %(message)s", level=logging.INFO)
 
 mcp = FastMCP("Currency MCP Server 💵")
 
+class Movie(BaseModel):
+    title: str = Field(..., description="The title of the movie")
+    logline: str = Field(..., description="The logline of the movie")
 
 @mcp.tool()
 def get_exchange_rate(
@@ -53,11 +57,17 @@ def get_exchange_rate(
         return {"error": "Invalid JSON response from API."}
 
 @mcp.tool()
-def store_movie_in_vector_db(movie: dict):
-    """Use this to store a movie plot in the vector database."""
-    logger.info(f"--- 🛠️ Tool: store_movie_in_vector_db called for movie {movie['title']} ---")
+def store_movie_in_vector_db(movie: Movie):
+    
+    """Use this to store a movie plot in the vector database.
+    Args:
+        movie (Movie): The movie to store in the vector database.
+    Returns:
+        A dictionary containing the movie title and a success message, or an error message if the request fails.
+    """
+    logger.info(f"--- 🛠️ Tool: store_movie_in_vector_db called for movie {movie.title} ---")
     try:
-        return {"message": f"Movie {movie['title']} stored in vector database."}
+        return {"message": f"Movie {movie.title} stored in vector database."}
     except Exception as e:
         logger.error(f"❌ Error storing movie in vector database: {e}")
         return {"error": f"Error storing movie in vector database: {e}"}
