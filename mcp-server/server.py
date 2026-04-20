@@ -65,7 +65,7 @@ def store_movie_in_vector_db(
     Returns:
         A dictionary containing the movie title and a success message, or an error message if the request fails.
     """
-    logger.info(f"--- 🛠️ Tool: store_movie_in_vector_db called for movie {movie.title} ---")
+    logger.info(f"--- 🛠️ Tool: store_movie_in_vector_db called for movie {title} ---")
     try:
         return {"message": f"Movie {title} stored in vector database."}
     except Exception as e:
@@ -80,10 +80,11 @@ async def health_check(request: Request) -> PlainTextResponse:
 if __name__ == "__main__":
     logger.info(f"🚀 MCP server started on port {os.getenv('PORT', '8080')}")
     # Could also use 'sse' transport, host="0.0.0.0" required for Cloud Run.
+    port_env = int(os.getenv("PORT", 8080))
     asyncio.run(
         mcp.run_async(
             transport="http",
             host="0.0.0.0",
-            port=os.getenv("PORT", "8080"),
+            port=port_env,
         )
     )
