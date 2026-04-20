@@ -67,7 +67,7 @@ def store_movie_in_vector_db(
     """
     logger.info(f"--- 🛠️ Tool: store_movie_in_vector_db called for movie {movie.title} ---")
     try:
-        return {"message": f"Movie {movie.title} stored in vector database."}
+        return {"message": f"Movie {title} stored in vector database."}
     except Exception as e:
         logger.error(f"❌ Error storing movie in vector database: {e}")
         return {"error": f"Error storing movie in vector database: {e}"}
