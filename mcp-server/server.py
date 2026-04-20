@@ -13,10 +13,6 @@ logging.basicConfig(format="[%(levelname)s]: %(message)s", level=logging.INFO)
 
 mcp = FastMCP("Currency MCP Server 💵")
 
-class Movie(BaseModel):
-    title: str = Field(..., description="The title of the movie")
-    logline: str = Field(..., description="The logline of the movie")
-
 @mcp.tool()
 def get_exchange_rate(
     currency_from: str = "USD",
@@ -57,11 +53,15 @@ def get_exchange_rate(
         return {"error": "Invalid JSON response from API."}
 
 @mcp.tool()
-def store_movie_in_vector_db(movie: Movie):
+def store_movie_in_vector_db(
+    title: str, 
+    logline: str
+):
     
     """Use this to store a movie plot in the vector database.
     Args:
-        movie (Movie): The movie to store in the vector database.
+        Title: The title of the movie.
+        Logline: The logline of the movie to store in the vector database.
     Returns:
         A dictionary containing the movie title and a success message, or an error message if the request fails.
     """
