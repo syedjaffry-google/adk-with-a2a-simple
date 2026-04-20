@@ -3,9 +3,9 @@ import logging
 import os
 
 import httpx
-from fastapi import Request
-from fastapi.responses import PlainTextResponse
 from fastmcp import FastMCP
+from starlette.requests import Request
+from starlette.responses import PlainTextResponse
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(format="[%(levelname)s]: %(message)s", level=logging.INFO)
@@ -62,10 +62,10 @@ def store_movie_in_vector_db(movie: dict):
         logger.error(f"❌ Error storing movie in vector database: {e}")
         return {"error": f"Error storing movie in vector database: {e}"}
 
+@mcp.custom_route("/", methods=["GET"])
 async def health_check(request: Request) -> PlainTextResponse:
-    return PlainTextResponse("Agent is healthy and running!")
-
-mcp.app.add_route("/", health_check, methods=["GET"])
+    """GCP Load Balancer health check endpoint."""
+    return PlainTextResponse("OK")
 
 if __name__ == "__main__":
     logger.info(f"🚀 MCP server started on port {os.getenv('PORT', '8080')}")

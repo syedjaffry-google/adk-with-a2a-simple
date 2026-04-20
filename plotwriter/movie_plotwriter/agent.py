@@ -35,8 +35,19 @@ model_name = os.environ.get('MODEL', 'gemini-2.5-flash')
 public_url = os.environ.get('PLOTWRITER_URL', 'http://localhost:8000')
 researcher_url = os.environ.get('RESEARCHER_URL', 'http://localhost:8001')
 movie_db_mcp_url = os.environ.get('MOVIE_DB_MCP_URL', 'http://localhost:8002')
+use_vertex_ai = os.environ.get('GOOGLE_GENAI_USE_VERTEXAI', True)
+project = os.environ.get('GOOGLE_CLOUD_PROJECT')
+location = os.environ.get('GOOGLE_CLOUD_LOCATION', 'us-central1')
 
 print(model_name)
+
+# 1. Initialize the model object
+shared_model = Gemini(
+    model_name=model_name,
+    vertexai=use_vertex_ai,
+    project=project,
+    location=location
+)
 
 # Tools
 def append_to_state(
@@ -74,7 +85,7 @@ def write_file(
 
 file_writer = Agent(
     name="file_writer",
-    model=model_name,
+    model=shared_model,
     description="Creates marketing details and saves a pitch document.",
     instruction="""
     PLOT_OUTLINE:
@@ -102,7 +113,7 @@ file_writer = Agent(
 
 screenwriter = Agent(
     name="screenwriter",
-    model=model_name,
+    model=shared_model,
     description="As a screenwriter, write a logline and plot outline for a biopic about a historical character.",
     instruction="""
     INSTRUCTIONS:
@@ -150,7 +161,7 @@ film_concept_team = SequentialAgent(
 
 root_agent = Agent(
     name="plotwriter",
-    model=model_name,
+    model=shared_model,
     description="Guides the user in crafting a movie plot.",
     instruction="""
     - Let the user know you will help them write a pitch for a hit movie. Ask them for   

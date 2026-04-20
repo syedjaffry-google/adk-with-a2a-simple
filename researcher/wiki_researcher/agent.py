@@ -34,8 +34,20 @@ cloud_logging_client.setup_logging()
 
 
 model_name = os.environ.get('MODEL', 'gemini-2.5-flash')
-public_url = os.environ.get('RESEARCHER_API_URL', 'http://localhost:8000')
+public_url = os.environ.get('RESEARCHER_URL', 'http://localhost:8000')
+use_vertex_ai = os.environ.get('GOOGLE_GENAI_USE_VERTEXAI', True)
+project = os.environ.get('GOOGLE_CLOUD_PROJECT')
+location = os.environ.get('GOOGLE_CLOUD_LOCATION', 'us-central1')
+
 print(model_name)
+
+# 1. Initialize the model object
+llm_model = Gemini(
+    model_name=model_name,
+    vertexai=use_vertex_ai,
+    project=project,
+    location=location
+)
 
 # Tools
 
@@ -62,7 +74,7 @@ def append_to_state(
 
 root_agent = Agent(
     name="wiki_researcher",
-    model=model_name,
+    model=llm_model,
     description="Answer research questions using Wikipedia.",
     instruction="""
     PROMPT:
