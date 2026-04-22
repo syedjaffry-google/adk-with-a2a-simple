@@ -250,3 +250,39 @@ spec:
     backendRefs:
     - name: mcp-server
       port: 80
+---
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: plotwriter-backend-policy
+spec:
+  default:
+    timeoutSec: 60
+  targetRef:
+    group: ""
+    kind: Service
+    name: plotwriter-agent
+---
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: researcher-backend-policy
+spec:
+  default:
+    timeoutSec: 60
+  targetRef:
+    group: ""
+    kind: Service
+    name: researcher-agent
+---
+apiVersion: networking.gke.io/v1
+kind: GCPBackendPolicy
+metadata:
+  name: mcp-server-backend-policy
+spec:
+  default:
+    timeoutSec: 60
+  targetRef:
+    group: ""
+    kind: Service
+    name: mcp-server

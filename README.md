@@ -24,7 +24,8 @@ adk deploy agent_engine --project [YOUR PROJECT NAME] --region [REGION] wiki_res
 The Deployment.yaml creates a Gateway API that serves traffic on port 80.
 
 ### Pre-requisits
-Ensure you have setup an Artifact Registry and created a repository to store the container images.
+1. Ensure you have setup an Artifact Registry and created a repository to store the container images.
+2. Ensure you have created a RAG corpus in Vertex AI.
 
 ### Build & push container images
 ```bash
@@ -76,6 +77,7 @@ kubectl create configmap agent-config \
   --from-literal=GOOGLE_CLOUD_LOCATION="YOUR REGION" \
   --from-literal=GOOGLE_GENAI_USE_VERTEXAI="true" \
   --from-literal=MODEL="gemini-2.5-flash"
+  --from-literal=CORPUS_NAME="projects/[YOUR PROJECT ID]/locations/[YOUR REGION]/ragCorpora/[YOUR CORPUS ID]"
 ```
 
 ### Deploy to GKE 

@@ -9,4 +9,5 @@ dependencies = [
     "pydantic",
     "httpx",
     "starlette",
+    "google-cloud-aiplatform",
 ]
